@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SwiftBank - Welcome Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f4f8;
+      color: #333;
+    }
+    header {
+      background: #004080;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+    h2 {
+      color: #004080;
+    }
+    .hidden {
+      display: none;
+    }
+    input, button {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.5rem 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .btn {
+      background: #004080;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .welcome-section {
+      text-align: center;
+    }
+    .welcome-section img {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SwiftBank</h1>
+    <nav>
+      <a href="#login">Login</a>
+      <a href="#signup">Sign Up</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="login">
+      <h2>Login</h2>
+      <input id="loginEmail" type="email" placeholder="Email" />
+      <input id="loginPassword" type="password" placeholder="Password" />
+      <button class="btn" onclick="handleLogin()">Login</button>
+      <p id="loginMsg"></p>
+    </section>
+
+    <section id="signup">
+      <h2>Sign Up</h2>
+      <input id="signupName" type="text" placeholder="Full Name" />
+      <input id="signupEmail" type="email" placeholder="Email" />
+      <input id="signupPassword" type="password" placeholder="Password" />
+      <button class="btn" onclick="handleSignup()">Create Account</button>
+      <p id="signupMsg"></p>
+    </section>
+
+    <section id="welcome" class="hidden welcome-section">
+      <h2>Welcome back, <span id="userName">User</span> 👋</h2>
+      <img id="profileImage" src="https://via.placeholder.com/300x300.png" alt="User Photo" />
+      <button class="btn" onclick="goToDashboard()">Enter My Dashboard</button>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <h2>Account Dashboard</h2>
+      <p><strong>Account No:</strong> 0123456789</p>
+      <p><strong>Balance:</strong> $5,240.00</p>
+      <p><strong>BTC Wallet:</strong> 0.052 BTC</p>
+    </section>
+  </main>
+
+  <script>
+    function handleSignup() {
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      if (!name || !email || !password) {
+        document.getElementById('signupMsg').textContent = 'Please fill all fields.';
+        return;
+      }
+      localStorage.setItem('user', JSON.stringify({ name, email, password }));
+      document.getElementById('signupMsg').textContent = 'Account created! You can now login.';
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.email === email && user.password === password) {
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('welcome').classList.remove('hidden');
+        document.getElementById('login').classList.add('hidden');
+        document.getElementById('signup').classList.add('hidden');
+      } else {
+        document.getElementById('loginMsg').textContent = 'Invalid email or password.';
+      }
+    }
+
+    function goToDashboard() {
+      document.getElementById('welcome').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
